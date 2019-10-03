@@ -1,0 +1,284 @@
+Documentation:
+  Enabled: false
+
+AllCops:
+  DisplayCopNames: true
+  Exclude:
+    - "Guardfile"
+    - "Rakefile"
+    - "config/**/*"
+    - "db/**/*"
+    - "doc/**/*"
+    - "spec/**/*"
+    - "script/**/*"
+    - "bin/**/*"
+    - "app/frontend/node_modules/**/*"
+    - "node_modules/**/*"
+    - "vendor/**/*"
+    - "app/interactors/api/accounts/v2/*" # TODO: Remove this asap - MRT 01aug17
+    - "lib/tasks/db-unsafe.rake"
+
+Rails:
+  Enabled: true
+
+Style/EmptyCaseCondition:
+  Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+Layout/SpaceInsideBlockBraces:
+  EnforcedStyle: space
+  SpaceBeforeBlockParameters: false
+  EnforcedStyleForEmptyBraces: no_space
+Style/StringLiterals:
+  Enabled: false
+  # Feel free to argue with me - MRT 24may17
+Layout/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+
+Layout/TrailingWhitespace:
+  Enabled: false
+  # Trailing whitespace after non-whitespace is bad, but there's no way to allow whitespace-only lines which maintain code indent. - MRT 24may17
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    "%": "[]"
+    "%i": "[]"
+    "%I": "[]"
+    "%q": "[]"
+    "%Q": "[]"
+    "%r": "{}"
+    "%s": "[]"
+    "%w": "[]"
+    "%W": "[]"
+    "%x": "[]"
+
+Layout/IndentFirstArrayElement:
+  Enabled: false
+  # This just doesn't work properly with any settings - MRT 24may17
+Layout/IndentFirstHashElement:
+  EnforcedStyle: align_braces
+
+Style/CommentAnnotation:
+  Enabled: false
+Style/SingleLineMethods:
+  Enabled: false
+Layout/SpaceBeforeSemicolon:
+  Enabled: false
+Style/BarePercentLiterals:
+  EnforcedStyle: percent_q
+Style/FormatString:
+  EnforcedStyle: percent
+Style/ClassVars:
+  Enabled: false
+Style/RescueModifier:
+  Enabled: false
+Layout/SpaceInsideParens:
+  Enabled: false
+Style/EmptyElse:
+  EnforcedStyle: empty
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+Style/DoubleNegation:
+  Enabled: false
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+  # Fight me - MRT 24may17
+Style/NumericLiterals:
+  Enabled: false
+Style/BracesAroundHashParameters:
+  Enabled: false
+  # Tricky one. Kill it for now. - MRT 24may17
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
+Style/CaseEquality:
+  Enabled: false
+Layout/CaseIndentation:
+  Enabled: false
+  # No option for aligning with the variable assignment - MRT 01aug17
+Style/PerlBackrefs:
+  Enabled: false
+Style/WordArray:
+  Enabled: false
+  # Sometimes we want an explicit array, for readability of consistency - MRT 01aug17
+Style/TernaryParentheses:
+  Enabled: false
+Style/MultilineBlockChain:
+  Enabled: false
+
+# Lint/BlockAlignment:
+#   Enabled: false
+Lint/AssignmentInCondition:
+  Enabled: false
+Lint/FormatParameterMismatch:
+  Enabled: false
+  # Buggy, can't handle *-params - MRT 24may17
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+
+Metrics/AbcSize:
+  Enabled: true
+  Max: 200
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+  Max: 200
+  # Ridiculous and arbitrary - MRT 24may17
+# Commonly used screens these days easily fit more than 80 characters.
+Metrics/LineLength:
+  Max: 120
+# Too short methods lead to extraction of single-use methods, which can make
+# the code easier to read (by naming things), but can also clutter the class
+Metrics/MethodLength:
+  Max: 20
+  # Ridiculous and arbitrary - MRT 24may17
+Metrics/BlockLength:
+  Enabled: false
+  Max: 100
+
+  # Nobody's editing on a tiny fixed terminal anymore - MRT 24may17
+Metrics/ModuleLength:
+  Enabled: false
+  # Ridiculous and arbitrary - MRT 10oct17
+Bundler/OrderedGems:
+  Enabled: false
+  # Nope. - MRT 24may17
+
+## Things to remove when we get a chance:
+Style/FrozenStringLiteralComment:
+  Enabled: false
+  # This is a good idea, but not today - MRT 24may17
+Style/RedundantSelf:
+  Enabled: false
+  # We might consider turning this back on at some point in the future, but I see nothing wrong with being explicit - MRT 24may17
+Style/UnneededPercentQ:
+  Enabled: false
+  # This is a good idea, but not today - MRT 24may17
+Style/PercentQLiterals:
+  Enabled: false
+  # This is a good idea, but not today - MRT 24may17
+Rails/Delegate:
+  Enabled: false
+  # This is a good idea, but not today - MRT 24may17
+
+Layout/MultilineOperationIndentation:
+  Enabled: false
+  # We have code-that-writes-code that this cop can't parse properly. Ignoring for now. - MRT 24may17
+Rails/DynamicFindBy:
+  Enabled: false
+  # Reenable this with a whitelist as soon as possible. - MRT 24may17
+Style/GuardClause:
+  Enabled: false
+  # MinBodyLength: 5
+  # Buggy, misreading if-assignment methods. - MRT 24may17
+Style/Next:
+  Enabled: false
+  # Buggy, misreading if-assignment methods. - MRT 24may17
+Naming/ConstantName:
+  Enabled: false
+  # Ignore due to namespacing workarounds - MRT 24may17
+Lint/HandleExceptions:
+  Enabled: false
+  # Sometimes it's the right thing to do - MRT 01aug17
+Rails/ReadWriteAttribute:
+  Enabled: false
+  # If someone can come up with a good argument, I'll consider it. - MRT 01aug17
+Security/Eval:
+  Enabled: false
+  # We really should have this on, but not while I need it. - MRT 01aug17
+Rails/FindBy:
+  Enabled: false
+  # I /like/ where().first - MRT 01aug17
+Security/YAMLLoad:
+  Enabled: false
+  # Nope. - MRT 02jan18
+Naming/HeredocDelimiterNaming:
+  Enabled: false
+  # Really? - MRT 02jan18
+Lint/LiteralAsCondition:
+  Enabled: false
+  # It aids readability, tyvm. - MRT 02jan18
+Rails/SkipsModelValidations:
+  Enabled: false
+  # Yes, that's why I use it. - MRT 02jan18
+Lint/InterpolationCheck:
+  Enabled: false
+  # Intentional use, but I wish I could just make specific exceptions. - MRT 02jan18
+Rails/Blank:
+  Enabled: false
+  # Why? - MRT 02jan18
+Style/RedundantConditional:
+  Enabled: false
+  # Not when you want to ensure the type of the return - MRT 02jan18
+Layout/EmptyLinesAroundArguments:
+  Enabled: false
+  # Getting false positives - MRT 02jan18
+Style/FormatStringToken:
+  Enabled: false
+  # Nope. - MRT 02jan18
+Rails/InverseOf:
+  Enabled: false
+  # Maybe? Not right now. - MRT 02jan18
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+  # Maybe? Not right now. - MRT 02jan18
+Style/CommentedKeyword:
+  Enabled: false
+  # You're not my real dad! - MRT 02jan18
+Layout/IndentHeredoc:
+  Enabled: false
+  # Buggy - MRT 17jan18
+Layout/CommentIndentation:
+  Enabled: false
+  # False positives - MRT 17jan18
+Rails/Output:
+  Enabled: false
+  # inappropriate limitation - MRT 18jan18
+Rails/Exit:
+  Enabled: false
+  # inappropriate limitation - MRT 18jan18
+Lint/RescueException:
+  Enabled: false
+  # Sometimes it's apprropriate - MRT 18jan18
+Rails/UnknownEnv:
+  Enabled: false
+  # Seriously? - MRT 30jan18
+Metrics/BlockNesting:
+  Enabled: false
+  # HAHAHAHAno - MRT 07may18
+Layout/IndentFirstArgument:
+  EnforcedStyle: consistent
+  # default causes some seriously ugly results sometimes - MRT 07may18
+Lint/UnneededSplatExpansion:
+  Enabled: false
+
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
+  # Who caren't if a method is explicitly defined or not? - MRT 06aug18
+Rails/OutputSafety:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Style/EachWithObject:
+  Enabled: false
+  # Bug in Rubocop makes this cop unusable. We can enable it when Rubocop is updated.
+  # See https://github.com/rubocop-hq/rubocop/pull/6042    ~EAKM 2018-Jan-10
+Style/SpecialGlobalVars:
+  Enabled: false
+  # No, we're not going to require a new lib just to get english variable names - MRT 10jan19
+Style/AsciiComments:
+  Enabled: false
+  # 🖕🏻 ~EAKM 2019-Jan-29
+Rails/HasAndBelongsToMany:
+  Enabled: false
+  # ... No? - MRT 14mar19
