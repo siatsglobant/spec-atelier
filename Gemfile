@@ -9,8 +9,10 @@ gem 'puma', '~> 3.11'
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'rack-cors', require: 'rack/cors'
 gem 'bcrypt'
+gem 'jwt'
 
 group :development, :test do
+  gem 'pry'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 end
 
