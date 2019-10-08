@@ -1,24 +1,58 @@
-# README
+## Description
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Spec-atelier is the plattform to develop your arquictertural docs for construction projects. Its backend is an API-mode, JSON-only Rails app;
+its frontend is an React app built and powered by Node.
 
-Things you may want to cover:
+## Install
 
-* Ruby version
+Version Requirements:
 
-* System dependencies
+- **Ruby 2.6.3**
+- **Node 8.x** [(LTS)](https://github.com/nodejs/Release#release-schedule1)
+- **PostgreSQL 9.4** (via Homebrew: `postgresql@9.4`)
 
-* Configuration
+Assumptions:
 
-* Database creation
+- [rbenv] for Ruby version management
+- [nvm] for Node version management
+- [Homebrew] for other macOS packages
 
-* Database initialization
+### Installation
 
-* How to run the test suite
+Follow these instructions for your platform:
+```bash
+mkdir spec-atelier && cd spec-atelier
+mkdir back && cd back
+git clone git@github.com:Sophia-Sergio/spec-atelier.git .
+cd .. && mkdir front
+cd front
+git clone git@github.com:Proskynete/specatelier-frontend.git .
 
-* Services (job queues, cache servers, search engines, etc.)
+```
 
-* Deployment instructions
+### Create and populate databases
 
-* ...
+Once you have completed the installation instructions above, follow these steps to create and
+populate your database.
+
+Note: The database creation task and synthetic data generation task must be run in separate commands.
+
+```bash
+cd back
+bundle install
+rails db:create db:migrate
+```
+
+### Start server for back and front
+
+```bash
+foreman start -f Procfile.dev
+```
+
+Testing locally:
+
+```bash
+# Back-end Rails tests
+$ bundle exec rspec   # add "--format documentation" for verbose reporting
+                      # of successful tests
+```
