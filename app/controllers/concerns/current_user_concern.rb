@@ -1,16 +1,16 @@
 module CurrentUserConcern
-  extedn ActiveSupport::Concern
-
-  included do
-    before_action :set_current_user
-  end
+  extend ActiveSupport::Concern
 
   def set_current_user
-    @current_user = User.find(session[:user_id]) if session[:user_id]
+    if cookies.signed[:jwt]
+      user_id = JsonWebToken.decode(cookies.signed[:jwt])[:user_id]
+      @current_user = User.find(user_id)
+    else
+      render json: { status: :unauthorized }
+    end
   end
 
   def current_user
     @current_user
   end
-
 end

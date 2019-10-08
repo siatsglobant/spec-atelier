@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::API
   include ::ActionController::Cookies
-  # skip_before_action :verify_authenticity_token
+
+  def valid_session
+    raise StandardError, "No session found" unless request.headers["X-CSRF-Token"] == cookies.signed[:jwt]
+  end
 end
