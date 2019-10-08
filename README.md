@@ -24,6 +24,7 @@ Follow these instructions for your platform:
 mkdir spec-atelier && cd spec-atelier
 mkdir back && cd back
 git clone git@github.com:Sophia-Sergio/spec-atelier.git .
+bundle install
 cd .. && mkdir front
 cd front
 git clone git@github.com:Proskynete/specatelier-frontend.git .
@@ -35,11 +36,8 @@ git clone git@github.com:Proskynete/specatelier-frontend.git .
 Once you have completed the installation instructions above, follow these steps to create and
 populate your database.
 
-Note: The database creation task and synthetic data generation task must be run in separate commands.
-
 ```bash
 cd back
-bundle install
 rails db:create db:migrate
 ```
 
@@ -49,7 +47,7 @@ rails db:create db:migrate
 foreman start -f Procfile.dev
 ```
 
-Testing locally:
+### Testing locally:
 
 ```bash
 # Back-end Rails tests
