@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) {|repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.3'
+ruby '2.6.5'
 
 gem 'rails', '~> 6.0.0'
 gem 'pg', '>= 0.18', '< 2.0'
@@ -12,7 +12,13 @@ gem 'bcrypt'
 gem 'jwt'
 
 group :development, :test do
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'factory_bot_rails'
+  gem 'rspec-collection_matchers'
+  gem 'rspec-rails', '~>3.5'
   gem 'pry'
+  gem 'pry-rails'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
 end
 
