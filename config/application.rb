@@ -26,9 +26,17 @@ module Back
     config.middleware.use ActionDispatch::Cookies
     config.api_only = true
 
-    config.before_configuration do
-      env_file = File.join(Rails.root, 'config', 'local_env.yml')
-      YAML.load(File.open(env_file)).each {|key, value|  ENV[key.to_s] = value } if File.exists?(env_file) && Rails.env.development?
+    env_file = File.join(Rails.root, 'config', 'local_env.yml')
+    if (Rails.env.development? || Rails.env.test?) && File.exists?(env_file)
+      config.before_configuration do
+        YAML.load(File.open(env_file)).each {|key, value|  ENV[key.to_s] = value }
+        config.generators do |g|
+          g.template_engine :haml
+          g.test_framework  :rspec, fixture: false
+          g.view_specs      false
+          g.helper_specs    false
+        end
+      end
     end
   end
 end
