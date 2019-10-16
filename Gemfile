@@ -10,11 +10,14 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'rack-cors', require: 'rack/cors'
 gem 'bcrypt'
 gem 'jwt'
+gem 'sendgrid-ruby'
+gem 'haml-rails', '~> 2.0'
 
 group :development, :test do
   gem 'pry'
   gem 'pry-rails'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'letter_opener'
 end
 
 group :development do
