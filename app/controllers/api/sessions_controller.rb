@@ -1,34 +1,33 @@
 module Api
   class SessionsController < ApplicationController
-    include CurrentUserConcern
     before_action :set_current_user, except: %i[create logout]
-    before_action :valid_session, except: :create
+    before_action :valid_session, except: %i[create email_testing]
 
     def create
       user = User.find_by(email: params['user']['email']).try(:authenticate, params['user']['password'])
-      if user
-        cookies.signed[:jwt] = { value: JsonWebToken.encode(user_id: user.id), httponly: true, expires: 1.hour.from_now }
-        render json: { status: :created, logged_in: true, user: user, jwt: cookies.signed[:jwt] }
+      if user.present?
+        start_session(user)
+        render json: { logged_in: true, user: user, jwt: current_session.token }, status: :created
       else
-        render json: { status: :not_found }
+        render json: { status: 404 }, status: :not_found
       end
     end
 
     def logged_in
       if current_user.present?
-        render json: { logged_in: true, user: current_user, jwt: cookies.signed[:jwt] }
+        render json: { logged_in: true, user: current_user, jwt: current_session.token }
       else
         render json: { logged_in: false }
       end
     end
 
-    def anything
-      render json: current_user
+    def email_testing
+      UserNotifierMailer.send_signup_email(current_user).deliver
     end
 
     def logout
-      cookies.delete(:jwt)
-      render json: { status: :ok, logged_out: true }
+      end_session
+      render json: { logged_out: true }, status: :ok
     end
   end
 end
