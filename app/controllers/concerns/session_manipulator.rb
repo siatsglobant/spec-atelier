@@ -1,6 +1,23 @@
 module SessionManipulator
   extend ActiveSupport::Concern
-  include CurrentUser
+
+  def set_current_user
+    @set_current_user ||= begin
+      if cookies.signed[:jwt] || auth_header.present?
+        token = cookies.signed[:jwt] || auth_header
+        user_id = JsonWebToken.decode(token)[:user_id]
+        User.find(user_id)
+      end
+    end
+  end
+
+  def current_user
+    set_current_user
+  end
+
+  def current_session
+    @current_session ||= current_user.session if current_user.session.active?
+  end
 
   def start_session(user)
     Session.find_or_create_by(user: user).update(token: set_token(user, 24.hours.from_now))
@@ -25,7 +42,11 @@ module SessionManipulator
   end
 
   def valid_session_conditions
-    request_token = request.headers["X-CSRF-Token"]
+    request_token = auth_header
     request_token.present? && current_session.active? && request_token == current_session.token
+  end
+
+  def auth_header
+    request.headers["Authorization"]&.remove('Bearer ')
   end
 end

@@ -1,7 +1,7 @@
 module Api
   class SessionsController < ApplicationController
     before_action :set_current_user, except: %i[create logout]
-    before_action :valid_session, except: %i[create email_testing]
+    before_action :valid_session, except: %i[create]
 
     def create
       user = User.find_by(email: params['user']['email']).try(:authenticate, params['user']['password'])
@@ -9,7 +9,7 @@ module Api
         start_session(user)
         render json: { logged_in: true, user: user, jwt: current_session.token }, status: :created
       else
-        render json: { status: 404 }, status: :not_found
+        render json: { error: 'Email or password not found' }, status: :not_found
       end
     end
 
@@ -19,10 +19,6 @@ module Api
       else
         render json: { logged_in: false }
       end
-    end
-
-    def email_testing
-      UserNotifierMailer.send_signup_email(current_user).deliver
     end
 
     def logout
