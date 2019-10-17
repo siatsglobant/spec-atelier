@@ -39,7 +39,7 @@ describe Api::SessionsController, type: :controller do
 
     describe 'when not sending header with token' do
       before do
-        request.headers['X-CSRF-Token'] = session.token
+        request.headers['Authorization'] = "Bearer #{session.token}"
         put :logout
       end
 
