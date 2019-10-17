@@ -1,2 +1,2 @@
-web: cd ../front && npm run dev
-api: PORT=3000 bundle exec rails s
+web: cd ../front && lsof -ti :8080 | xargs kill && npm run start:int
+api: lsof -ti :3000 | xargs kill && PORT=3000 bundle exec rails s
