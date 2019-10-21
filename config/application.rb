@@ -26,6 +26,11 @@ module Back
     config.middleware.use ActionDispatch::Cookies
     config.api_only = true
 
+    # config.middleware.insert_after(ActiveRecord::QueryCache, ActionDispatch::Cookies)
+    config.middleware.insert_after(ActionDispatch::Cookies, ActionDispatch::Session::CookieStore)
+    config.time_zone = 'America/Santiago'
+    config.active_record.default_timezone = :local
+
     env_file = File.join(Rails.root, 'config', 'local_env.yml')
     if (Rails.env.development? || Rails.env.test?) && File.exists?(env_file)
       config.before_configuration do
