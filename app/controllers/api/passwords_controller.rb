@@ -1,7 +1,7 @@
 module Api
   class PasswordsController < ApplicationController
     def forgot
-      return render json: { error: 'Email not present' } if params[:email].blank?
+      return render json: { error: 'Email not present' }, status: :not_found if params[:email].blank?
 
       user = User.find_by(email: params[:email])
       if user.present?
@@ -14,18 +14,17 @@ module Api
     end
 
     def reset
-      return render json: { error: 'Token not present' } if params[:token].blank?
+      if params[:token].blank? || params[:password].blank?
+        return render json: { error: 'Token not present' }, status: :not_found
+      end
 
-      token = params[:token].to_s
-      user  = User.find_by(reset_password_token: token)
+      user = User.find_by(reset_password_token: params[:token].to_s)
       if user.present? && user.password_token_valid?
-        if user.reset_password!(params[:password])
-          render json: { status: 'password updated' }, status: :ok
-        else
-          render json: { error: user.errors.full_messages }, status: :unprocessable_entity
-        end
+        return render json: { status: 'password updated' }, status: :ok if user.reset_password!(params[:password])
+
+        render json: { error: user.errors.full_messages }, status: :unprocessable_entity
       else
-        render json: { error: 'Link not valid or expired. Try generating a new link' }, status: :not_found
+        render json: { error: 'Link not valid or expired' }, status: :not_found
       end
     end
   end
