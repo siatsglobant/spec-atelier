@@ -1,32 +1,42 @@
 module SessionManipulator
   extend ActiveSupport::Concern
 
-  def set_current_user
-    @set_current_user ||= begin
-      if cookies.signed[:jwt] || auth_header.present?
-        token = cookies.signed[:jwt] || auth_header
-        user_id = JsonWebToken.decode(token)[:user_id]
-        User.find(user_id)
-      end
-    end
-  end
-
-  def current_user
-    set_current_user
-  end
+  HOURS_EXPIRES_IN = 24
 
   def current_session
     @current_session ||= current_user.session if current_user.session.active?
   end
 
-  def start_session(user)
-    Session.find_or_create_by(user: user).update(token: set_token(user, 24.hours.from_now))
-    set_current_user
+  def current_user
+    @current_user ||= begin
+      auth_token = cookies.signed[:jwt].presence || header_token.presence || nil
+      if auth_token.present?
+        user_id = JsonWebToken.decode(auth_token)[:user_id]
+        user    = User.find(user_id)
+        put_cookie(auth_token) if cookies.signed[:jwt].blank? && header_token.present?
+        user
+      end
+    end
   end
 
   def end_session
-    current_session.update(active: false)
+    current_session.update(active: false, expires: nil)
     cookies.delete(:jwt)
+  end
+
+  def omniouth_handler_login(auth)
+    user = User.where(email: auth.info.email).first_or_initialize
+    user.password = SecureRandom.hex(10) if user.passsword.nil?
+    user.google_token = auth.credentials.token
+    user.google_token_refresh = auth.credentials.refresh_token if auth.credentials.refresh_token.present?
+    user.save
+    user
+  end
+
+  def start_session(user)
+    token = token(user)
+    put_cookie(token)
+    Session.find_or_create_by(user: user).update(token: token, expires: expires)
   end
 
   def valid_session
@@ -35,18 +45,30 @@ module SessionManipulator
 
   private
 
-  def set_token(user, expires)
-    token = JsonWebToken.encode({ user_id: user.id }, expires)
+  def header_token
+    request.headers["Authorization"]&.remove('Bearer ')
+  end
+
+  def token(user)
+    JsonWebToken.encode({ user_id: user.id }, expires)
+  end
+
+  def put_cookie(token)
     cookies.signed[:jwt] = { value: token, httponly: true, expires: expires }
-    token
   end
 
   def valid_session_conditions
-    request_token = auth_header
-    request_token.present? && current_session.active? && request_token == current_session.token
+    header_token.present? && current_session.active? && header_token == current_session.token && check_expires_date?
   end
 
-  def auth_header
-    request.headers["Authorization"]&.remove('Bearer ')
+  def check_expires_date?
+    return true if current_session.expires >= Time.zone.now
+
+    end_session
+    false
+  end
+
+  def expires
+    HOURS_EXPIRES_IN.hours.from_now
   end
 end
