@@ -1,7 +1,7 @@
 ## Description
 
 Spec-atelier is the plattform to develop your arquictertural docs for construction projects. Its backend is an API-mode, JSON-only Rails app;
-its frontend is an React app built and powered by Node.
+its frontend is a React app built and powered by Node.
 
 ## Install
 
