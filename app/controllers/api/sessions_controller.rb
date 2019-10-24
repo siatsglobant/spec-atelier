@@ -17,9 +17,9 @@ module Api
 
     def logged_in
       if current_user.present?
-        render json: { logged_in: true, user: current_user, jwt: current_session.token }
+        render json: { logged_in: true, user: BasicUserPresenter.to_print(current_user) }, status: :ok
       else
-        render json: { logged_in: false }
+        render json: { logged_in: false }, status: :not_found
       end
     end
 
