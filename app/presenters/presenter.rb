@@ -18,7 +18,7 @@ class Presenter
     end
 
     def resource_or_presenter_inheritor_response(key)
-      presenter_inheritor_method_response(key) || @resource[key]
+      presenter_inheritor_method_response(key) || @resource.send(key)
     end
 
     def define_obj_response
