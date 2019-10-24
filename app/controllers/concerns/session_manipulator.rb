@@ -26,7 +26,7 @@ module SessionManipulator
 
   def omniouth_handler_login(auth)
     user = User.where(email: auth.info.email).first_or_initialize
-    user.password = SecureRandom.hex(10) if user.passsword.nil?
+    user.password = SecureRandom.hex(10) if user.password.nil?
     user.google_token = auth.credentials.token
     user.google_token_refresh = auth.credentials.refresh_token if auth.credentials.refresh_token.present?
     user.save

@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     get :password_forgot, to: 'passwords#forgot'
     get :password_reset, to: 'passwords#reset'
   end
-  post 'auth/:provider/callback', to: 'api/sessions#google_auth'
+  get 'auth/:provider/callback', to: 'api/sessions#google_auth'
   get 'auth/failure', to: 'api/sessions#google_auth_failure'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
