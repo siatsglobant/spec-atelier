@@ -12,8 +12,6 @@ gem 'bcrypt'
 gem 'jwt'
 gem 'sendgrid-ruby'
 gem 'haml-rails', '~> 2.0'
-gem 'omniauth-google-oauth2'
-gem 'omniauth-rails_csrf_protection', '~> 0.1'
 
 group :development, :test do
   gem 'pry'

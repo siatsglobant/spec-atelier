@@ -29,14 +29,30 @@ module Api
     end
 
     def google_auth
-      access_token = request.env["omniauth.auth"]
-      user = omniouth_handler_login(access_token)
-      start_session(user)
+      omniouth_handler_login
       render json: { logged_in: true, user: BasicUserPresenter.to_print(current_user) }, status: :created
     end
 
     def google_auth_failure
       render json: { error: 'google auth failure' }, status: :internal_server_error
+    end
+
+    private
+
+    def omniouth_handler_login
+      user = User.where(email: user_params[:email]).first_or_initialize
+      user.google_token = user_params[:google_token]
+      if user.new_record?
+        user.password = SecureRandom.hex(10) if user.password.nil?
+        user.update(user_params)
+      else
+        user.save
+      end
+      start_session(user)
+    end
+
+    def user_params
+      params.require(:user).permit(:name, :email, :last_name, :google_token)
     end
   end
 end
