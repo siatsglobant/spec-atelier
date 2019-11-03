@@ -30,6 +30,17 @@ describe Api::SessionsController, type: :controller do
     end
   end
 
+  describe '#google_auth' do
+    before { post :google_auth, params: { user: { name: 'name', last_name: 'last_name', google_token: 'token', email: 'not_existing_mail@test.com' } }}
+
+    it 'returns created status' do
+      expect(response).to have_http_status(:created)
+      expect(json.keys).to match_array(%w[logged_in user])
+      expect(json['user'].keys).to match_array(%w[email jwt])
+      expect(User.last.name).to eq('name')
+    end
+  end
+
   describe '#logout' do
     describe 'when not sending header with token' do
       before { get :logout }
