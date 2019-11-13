@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :user do
-    email    { 'email@test.com' }
+    email    { Faker::Internet.email }
     password { '123456' }
 
     trait :with_password_token do

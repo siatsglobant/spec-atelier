@@ -39,7 +39,6 @@ describe Api::PasswordsController, type: :controller do
     end
 
     describe 'when token and password is passed' do
-
       it 'returns ok status' do
         user = create(:user, :with_password_token )
         get :reset, params: { token: user.reset_password_token, password: '123456'}

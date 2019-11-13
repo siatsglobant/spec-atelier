@@ -4,7 +4,7 @@ module SessionManipulator
   HOURS_EXPIRES_IN = 24
 
   def current_session
-    @current_session ||= current_user.session if current_user.session.active?
+    @current_session ||= current_user&.session if current_user&.session&.active?
   end
 
   def current_user
