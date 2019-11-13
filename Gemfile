@@ -18,6 +18,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'letter_opener'
+  gem 'faker'
 end
 
 group :development do
