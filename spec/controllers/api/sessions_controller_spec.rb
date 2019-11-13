@@ -43,11 +43,8 @@ describe Api::SessionsController, type: :controller do
 
   describe '#logout' do
     describe 'when not sending header with token' do
-      before { get :logout }
-
-      it 'return anauthorized status' do
-        expect(response).to have_http_status(:unauthorized)
-      end
+      before { put :logout }
+      it_behaves_like 'an unauthorized api request'
     end
 
     describe 'when not sending header with token' do

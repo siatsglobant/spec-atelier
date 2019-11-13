@@ -1,13 +1,12 @@
 module Api
   class SessionsController < ApplicationController
-    before_action :set_current_user, except: %i[create logout google_auth google_auth_failure]
     before_action :valid_session, except: %i[create google_auth google_auth_failure]
 
     def create
       user = User.find_by(email: params['user']['email'])
       if user.try(:authenticate, params['user']['password']).present?
         start_session(user)
-        render json: { logged_in: true, user: BasicUserPresenter.to_print(current_user) }, status: :created
+        render json: { logged_in: true, user: BasicUserPresenter.decorate(current_user) }, status: :created
       elsif user&.google_token.present?
         render json: { error: 'you signed up with google' }, status: :not_found
       else
@@ -17,7 +16,7 @@ module Api
 
     def logged_in
       if current_user.present?
-        render json: { logged_in: true, user: BasicUserPresenter.to_print(current_user) }, status: :ok
+        render json: { logged_in: true, user: BasicUserPresenter.decorate(current_user) }, status: :ok
       else
         render json: { logged_in: false }, status: :not_found
       end
@@ -30,7 +29,7 @@ module Api
 
     def google_auth
       omniouth_handler_login
-      render json: { logged_in: true, user: BasicUserPresenter.to_print(current_user) }, status: :created
+      render json: { logged_in: true, user: BasicUserPresenter.decorate(current_user) }, status: :created
     end
 
     def google_auth_failure

@@ -26,6 +26,12 @@ module Back
     config.middleware.use ActionDispatch::Cookies
     config.api_only = true
 
+    #remove unused default routes
+    initializer(:remove_action_mailbox_and_activestorage_routes, after: :add_routing_paths) { |app|
+      app.routes_reloader.paths.delete_if {|path| path =~ /activestorage/ }
+      app.routes_reloader.paths.delete_if {|path| path =~ /actionmailbox/ }
+    }
+
     # config.middleware.insert_after(ActiveRecord::QueryCache, ActionDispatch::Cookies)
     config.middleware.insert_after(ActionDispatch::Cookies, ActionDispatch::Session::CookieStore)
     config.time_zone = 'America/Santiago'

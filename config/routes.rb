@@ -8,6 +8,11 @@ Rails.application.routes.draw do
 
     get :password_forgot, to: 'passwords#forgot'
     get :password_reset, to: 'passwords#reset'
+
+    resources :users, only: %i[] do
+      get 'projects/search'
+      resources :projects
+    end
   end
   post 'auth/google_login_service', to: 'api/sessions#google_auth'
 
