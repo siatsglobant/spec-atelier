@@ -17,11 +17,11 @@ describe Api::ProjectsController, type: :controller do
         request.headers['Authorization'] = "Bearer #{session.token}"
         get :index, params: { user_id: user.id }
 
-        expect(json.count).to eq(3)
-        expect(json.first['name']).to eq(project3.name)
-        expect(json.second['name']).to eq(project2.name)
-        expect(json.third['name']).to eq(project1.name)
-        expect(json.first.keys).to match_array(%w[id name project_type work_type country city delivery_date status created_at updated_at])
+        expect(json['projects'].count).to eq(3)
+        expect(json['projects'].first['name']).to eq(project3.name)
+        expect(json['projects'].second['name']).to eq(project2.name)
+        expect(json['projects'].third['name']).to eq(project1.name)
+        expect(json['projects'].first.keys).to match_array(%w[id name project_type work_type country city delivery_date status created_at updated_at])
       end
     end
   end
@@ -37,7 +37,7 @@ describe Api::ProjectsController, type: :controller do
         request.headers['Authorization'] = "Bearer #{session.token}"
         get :show, params: { user_id: user.id, id: project1.id }
 
-        expect(json['name']).to eq(project1.name)
+        expect(json['project']['name']).to eq(project1.name)
       end
     end
   end
@@ -81,7 +81,7 @@ describe Api::ProjectsController, type: :controller do
         request.headers['Authorization'] = "Bearer #{session.token}"
         get :search, params: {  user_id: user.id, search_keywords: 'c ab' }
 
-        expect(json.count).to eq(2)
+        expect(json['projects'].count).to eq(2)
       end
     end
   end
@@ -111,7 +111,7 @@ describe Api::ProjectsController, type: :controller do
         it 'return a list of projects ordered by parameter' do
           get :ordered, params: { user_id: user.id, ordered_by: 'created_at_asc' }
 
-          expect(json.first['name']).to eq(project1.name)
+          expect(json['projects'].first['name']).to eq(project1.name)
         end
       end
 
@@ -119,7 +119,7 @@ describe Api::ProjectsController, type: :controller do
         it 'return a list of projects ordered by parameter' do
           get :ordered, params: { user_id: user.id, ordered_by: 'created_at_desc' }
 
-          expect(json.first['name']).to eq(project3.name)
+          expect(json['projects'].first['name']).to eq(project3.name)
         end
       end
 
@@ -127,7 +127,7 @@ describe Api::ProjectsController, type: :controller do
         it 'return a list of projects ordered by parameter' do
           get :ordered, params: { user_id: user.id, ordered_by: 'updated_at_asc' }
 
-          expect(json.first['name']).to eq(project1.name)
+          expect(json['projects'].first['name']).to eq(project1.name)
         end
       end
 
@@ -136,7 +136,7 @@ describe Api::ProjectsController, type: :controller do
           project2.update(name: 'another_name')
           get :ordered, params: { user_id: user.id, ordered_by: 'updated_at_desc' }
 
-          expect(json.first['name']).to eq(project2.name)
+          expect(json['projects'].first['name']).to eq(project2.name)
         end
       end
 
@@ -144,7 +144,7 @@ describe Api::ProjectsController, type: :controller do
         it 'return a list of projects ordered by parameter' do
           get :ordered, params: { user_id: user.id, ordered_by: 'name_asc' }
 
-          expect(json.first['name']).to eq(project2.name)
+          expect(json['projects'].first['name']).to eq(project2.name)
         end
       end
     end

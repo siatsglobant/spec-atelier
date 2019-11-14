@@ -5,11 +5,11 @@ module Api
     before_action :projects, only: %i[index search]
 
     def index
-      render json: Projects::PrivateProjectPresenter.decorate_list(projects.order(created_at: :desc)), status: :ok
+      render json: { projects: private_project_presenter.decorate_list(projects.order(created_at: :desc)) }, status: :ok
     end
 
     def show
-      render json: Projects::PrivateProjectPresenter.decorate(project), status: :ok
+      render json: { project: private_project_presenter.decorate(project) }, status: :ok
     end
 
     def create
@@ -24,7 +24,7 @@ module Api
 
     def search
       projects_list = projects.search(params[:search_keywords])
-      render json: Projects::PrivateProjectPresenter.decorate_list(projects_list), status: :created
+      render json: { projects: private_project_presenter.decorate_list(projects_list) }, status: :created
     end
 
     def destroy
@@ -40,7 +40,7 @@ module Api
         when 'updated_at_desc' then projects.order(updated_at: :desc)
         when 'name_asc' then projects.order(name: :asc)
       end
-      render json: Projects::PrivateProjectPresenter.decorate_list(projects_list), status: :created
+      render json: { projects: private_project_presenter.decorate_list(projects_list) }, status: :created
     end
 
     private
@@ -55,6 +55,10 @@ module Api
 
     def projects
       @projects ||= current_user.projects
+    end
+
+    def private_project_presenter
+      Projects::PrivateProjectPresenter
     end
   end
 end
