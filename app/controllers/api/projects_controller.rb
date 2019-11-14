@@ -32,6 +32,17 @@ module Api
       render json: '', status: :deleted
     end
 
+    def ordered
+      projects_list = case params[:ordered_by]
+        when 'created_at_asc' then projects.order(created_at: :asc)
+        when 'created_at_desc' then projects.order(created_at: :desc)
+        when 'updated_at_asc' then projects.order(updated_at: :asc)
+        when 'updated_at_desc' then projects.order(updated_at: :desc)
+        when 'name_asc' then projects.order(name: :asc)
+      end
+      render json: Projects::PrivateProjectPresenter.decorate_list(projects_list), status: :created
+    end
+
     private
 
     def project

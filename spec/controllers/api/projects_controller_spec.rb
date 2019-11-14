@@ -1,8 +1,10 @@
 describe Api::ProjectsController, type: :controller do
-  let(:user) { create(:user) }
+  let(:user)           { create(:user) }
   let(:no_logged_user) { create(:user) }
-  let(:session) { create(:session, user: user, token: session_token(user)) }
-  let(:project) { create(:project) }
+  let(:session)        { create(:session, user: user, token: session_token(user)) }
+  let!(:project1)      { create(:project, name: 'zbc abd aci', user: user) }
+  let!(:project2)      { create(:project, name: 'aca abc abi', user: user) }
+  let!(:project3)      { create(:project, name: 'bca abd abi', user: user) }
 
   describe '#index' do
     context 'without session' do
@@ -12,31 +14,30 @@ describe Api::ProjectsController, type: :controller do
 
     context 'with valid session' do
       it 'returns list of projects that belongs to user with session initialized' do
-        create_list(:project, 3, user: user)
         request.headers['Authorization'] = "Bearer #{session.token}"
         get :index, params: { user_id: user.id }
 
         expect(json.count).to eq(3)
-        expect(json.first['name']).to eq('fake project 3')
-        expect(json.second['name']).to eq('fake project 2')
-        expect(json.third['name']).to eq('fake project 1')
-        expect(json.first.keys).to match_array(%w[id name project_type work_type country city delivery_date status])
+        expect(json.first['name']).to eq(project3.name)
+        expect(json.second['name']).to eq(project2.name)
+        expect(json.third['name']).to eq(project1.name)
+        expect(json.first.keys).to match_array(%w[id name project_type work_type country city delivery_date status created_at updated_at])
       end
     end
   end
 
   describe '#show' do
     context 'without session' do
-      before { get :show, params: { user_id: no_logged_user.id, id: project.id } }
+      before { get :show, params: { user_id: no_logged_user.id, id: project1.id } }
       it_behaves_like 'an unauthorized api request'
     end
 
     context 'with valid session' do
       it 'returns a resource' do
         request.headers['Authorization'] = "Bearer #{session.token}"
-        get :show, params: { user_id: user.id, id: project.id }
+        get :show, params: { user_id: user.id, id: project1.id }
 
-        expect(json['name']).to eq(project.name)
+        expect(json['name']).to eq(project1.name)
       end
     end
   end
@@ -62,20 +63,14 @@ describe Api::ProjectsController, type: :controller do
   describe '#delete' do
     it 'soft deletes a project' do
       request.headers['Authorization'] = "Bearer #{session.token}"
-      delete :destroy, params: { user_id: user.id, id: project.id }
+      delete :destroy, params: { user_id: user.id, id: project1.id }
 
-      expect(project.soft_deleted).to eq(false)
-      expect(project.reload.soft_deleted).to eq(true)
+      expect(project1.soft_deleted).to eq(false)
+      expect(project1.reload.soft_deleted).to eq(true)
     end
   end
 
   describe '#search' do
-    before do
-      create(:project, name: 'abc abd aci', user: user)
-      create(:project, name: 'bca abc abi', user: user)
-      create(:project, name: 'bca abd abi', user: user)
-    end
-
     context 'without session' do
       before { get :search, params: { user_id: no_logged_user.id } }
       it_behaves_like 'an unauthorized api request'
@@ -92,12 +87,66 @@ describe Api::ProjectsController, type: :controller do
   end
 
   describe '#update' do
-    it 'updates a project' do
-      request.headers['Authorization'] = "Bearer #{session.token}"
-      patch :update, params: { user_id: user.id, id: project.id, project: { name: 'new name', project_type: 'residential' } }
+    context 'without session' do
+      before { patch :update, params: { user_id: no_logged_user.id, id: project1.id } }
+      it_behaves_like 'an unauthorized api request'
+    end
 
-      expect(project.reload.name).to eq('new name')
-      expect(project.reload.project_type).to eq('residencial')
+    context 'with valid session' do
+      it 'updates a project' do
+        request.headers['Authorization'] = "Bearer #{session.token}"
+        patch :update, params: { user_id: user.id, id: project1.id, project: { name: 'new name', project_type: 'residential' } }
+
+        expect(project1.reload.name).to eq('new name')
+        expect(project1.reload.project_type).to eq('residencial')
+      end
+    end
+  end
+
+  describe '#ordered' do
+    context 'with valid session' do
+      before { request.headers['Authorization'] = "Bearer #{session.token}" }
+
+      context 'by created_at asc' do
+        it 'return a list of projects ordered by parameter' do
+          get :ordered, params: { user_id: user.id, ordered_by: 'created_at_asc' }
+
+          expect(json.first['name']).to eq(project1.name)
+        end
+      end
+
+      context 'by created_at desc' do
+        it 'return a list of projects ordered by parameter' do
+          get :ordered, params: { user_id: user.id, ordered_by: 'created_at_desc' }
+
+          expect(json.first['name']).to eq(project3.name)
+        end
+      end
+
+      context 'by updated_at asc' do
+        it 'return a list of projects ordered by parameter' do
+          get :ordered, params: { user_id: user.id, ordered_by: 'updated_at_asc' }
+
+          expect(json.first['name']).to eq(project1.name)
+        end
+      end
+
+      context 'by updated_at desc' do
+        it 'return a list of projects ordered by parameter' do
+          project2.update(name: 'another_name')
+          get :ordered, params: { user_id: user.id, ordered_by: 'updated_at_desc' }
+
+          expect(json.first['name']).to eq(project2.name)
+        end
+      end
+
+      context 'by name' do
+        it 'return a list of projects ordered by parameter' do
+          get :ordered, params: { user_id: user.id, ordered_by: 'name_asc' }
+
+          expect(json.first['name']).to eq(project2.name)
+        end
+      end
     end
   end
 end
