@@ -17,7 +17,7 @@ describe Api::SessionsController, type: :controller do
       it 'returns created status' do
         expect(response).to have_http_status(:created)
         expect(json.keys).to match_array(%w[logged_in user])
-        expect(json['user'].keys).to match_array(%w[email jwt])
+        expect(json['user'].keys).to match_array(%w[id email jwt])
       end
     end
 
@@ -36,7 +36,7 @@ describe Api::SessionsController, type: :controller do
     it 'returns created status' do
       expect(response).to have_http_status(:created)
       expect(json.keys).to match_array(%w[logged_in user])
-      expect(json['user'].keys).to match_array(%w[email jwt])
+      expect(json['user'].keys).to match_array(%w[id email jwt])
       expect(User.last.name).to eq('name')
     end
   end

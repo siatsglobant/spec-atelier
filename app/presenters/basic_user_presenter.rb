@@ -1,5 +1,5 @@
 class BasicUserPresenter < Presenter
-  will_print :email, :jwt
+  will_print :id, :email, :jwt
 
   def jwt
     user.session.token
