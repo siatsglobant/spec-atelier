@@ -4,7 +4,7 @@ describe Api::RegistrationsController, type: :controller do
       get :create, params: { user: { email: 'test@email.com', password: '123456' } }
       expect(User.last.email).to eq('test@email.com')
       expect(json.keys).to match_array(%w[logged_in user])
-      expect(json['user'].keys).to match_array(%w[email jwt])
+      expect(json['user'].keys).to match_array(%w[id email jwt])
     end
   end
 end
