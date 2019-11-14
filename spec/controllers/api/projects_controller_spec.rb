@@ -20,7 +20,7 @@ describe Api::ProjectsController, type: :controller do
         expect(json.first['name']).to eq('fake project 3')
         expect(json.second['name']).to eq('fake project 2')
         expect(json.third['name']).to eq('fake project 1')
-        expect(json.first.keys).to match_array(%w[id name project_type work_type country city delivery_date status])
+        expect(json.first.keys).to match_array(%w[id name project_type work_type country city delivery_date status created_at updated_at])
       end
     end
   end
