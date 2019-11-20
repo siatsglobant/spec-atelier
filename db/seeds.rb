@@ -1,7 +1,29 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+def console_message(message, status)
+  meesage = '-' * 10 + message
+  puts status ? "success: #{message}" : "error: #{message}"
+end
+
+user = User.find_by(email: 'test@specatelier.com')
+user&.delete ? console_message('user deleted', true) : console_message('user not deleted', false)
+
+user = User.new(email: 'test@specatelier.com', name: 'Test', last_name: 'User', password: '123456', google_token: 'fake_token')
+user&.save ? console_message('user created', true) : console_message('user not created', false)
+
+Project.delete_all
+
+10.times do |index|
+  Project.create!(
+    name: "Fake Project #{index}",
+    project_type: Project.project_types.values.sample,
+    work_type: Project.work_types.values.sample,
+    country: Faker::Address.country,
+    city: Faker::Address.city,
+    delivery_date: Time.zone.now + 2.months,
+    visibility: Project.visibilities.values.sample,
+    status: 1,
+    user: user
+  )
+end
+
+Project.count == 10 ? console_message('projects created', true) : console_message('not all projects created', false)
+
