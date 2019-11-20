@@ -12,13 +12,13 @@ gem 'bcrypt'
 gem 'jwt'
 gem 'sendgrid-ruby'
 gem 'haml-rails', '~> 2.0'
+gem 'faker'
 
 group :development, :test do
   gem 'pry'
   gem 'pry-rails'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'letter_opener'
-  gem 'faker'
 end
 
 group :development do
