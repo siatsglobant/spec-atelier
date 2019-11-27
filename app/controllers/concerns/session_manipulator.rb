@@ -49,7 +49,7 @@ module SessionManipulator
   end
 
   def valid_session_conditions
-    header_token.present? && current_session.active? && header_token == current_session.token && check_expires_date?
+    header_token.present? && current_session&.active? && header_token == current_session&.token && check_expires_date?
   end
 
   def check_expires_date?
