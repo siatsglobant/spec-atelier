@@ -3,13 +3,13 @@ def console_message(message, status)
   puts status ? "success: #{message}" : "error: #{message}"
 end
 
+Project.delete_all
+
 user = User.find_by(email: 'test@specatelier.com')
 user&.delete ? console_message('user deleted', true) : console_message('user not deleted', false)
 
 user = User.new(email: 'test@specatelier.com', name: 'Test', last_name: 'User', password: '123456', google_token: 'fake_token')
 user&.save ? console_message('user created', true) : console_message('user not created', false)
-
-Project.delete_all
 
 10.times do |index|
   Project.create!(
