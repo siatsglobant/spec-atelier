@@ -4,6 +4,10 @@ def console_message(message, status)
 end
 
 Project.delete_all
+puts 'projects deleted'
+
+Session.delete_all
+puts 'sessions deleted'
 
 user = User.find_by(email: 'test@specatelier.com')
 user&.delete ? console_message('user deleted', true) : console_message('user not deleted', false)
