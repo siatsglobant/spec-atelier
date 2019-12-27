@@ -27,7 +27,7 @@ module SessionManipulator
   def start_session(user)
     token = token(user)
     put_cookie(token)
-    Session.find_or_create_by(user: user).update(token: token, expires: expires)
+    Session.find_or_create_by(user: user).update(token: token, expires: expires, active: true)
   end
 
   def valid_session
