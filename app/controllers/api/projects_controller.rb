@@ -33,13 +33,7 @@ module Api
     end
 
     def ordered
-      projects_list = case params[:ordered_by]
-        when 'created_at_asc' then projects.order(created_at: :asc)
-        when 'created_at_desc' then projects.order(created_at: :desc)
-        when 'updated_at_asc' then projects.order(updated_at: :asc)
-        when 'updated_at_desc' then projects.order(updated_at: :desc)
-        when 'name_asc' then projects.order(name: :asc)
-      end
+      projects_list = projects.order(formated_ordered_param)
       render json: { projects: private_project_presenter.decorate_list(projects_list) }, status: :created
     end
 
@@ -47,6 +41,12 @@ module Api
 
     def project
       @project ||= Project.find(params[:id])
+    end
+
+    def formated_ordered_param
+      column = params[:ordered_by].sub(/_asc|_desc/, '').to_sym
+      order  = params[:ordered_by].split('_').last
+      { column => order }
     end
 
     def project_params
