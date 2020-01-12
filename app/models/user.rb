@@ -1,8 +1,11 @@
 class User < ApplicationRecord
+  include RolifyAdmin
+  rolify
   has_secure_password
+  after_create :assign_default_role
   validates :email, presence: true, uniqueness: true
-  has_one :session
-  has_many :projects
+  has_one :session, dependent: :destroy
+  has_many :projects, dependent: :destroy
 
   def generate_password_token!
     update(reset_password_token: SecureRandom.hex(10), reset_password_sent_at: Time.zone.now)
@@ -14,5 +17,15 @@ class User < ApplicationRecord
 
   def reset_password!(password)
     update(reset_password_token: nil, password: password)
+  end
+
+  def active?
+    session.active?
+  end
+
+  private
+
+  def assign_default_role
+    add_role(:user) if roles.blank?
   end
 end
