@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     get :password_forgot, to: 'passwords#forgot'
     get :password_reset, to: 'passwords#reset'
 
-    resources :users, only: %i[] do
+    resources :users, only: %i[update show] do
       get 'projects/search'
       get 'projects/ordered'
       resources :projects
