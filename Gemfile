@@ -13,6 +13,8 @@ gem 'jwt'
 gem 'sendgrid-ruby'
 gem 'haml-rails', '~> 2.0'
 gem 'faker'
+gem 'rolify'
+gem 'cancancan'
 
 group :development, :test do
   gem 'pry'

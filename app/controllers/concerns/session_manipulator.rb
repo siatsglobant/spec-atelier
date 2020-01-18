@@ -1,7 +1,7 @@
 module SessionManipulator
   extend ActiveSupport::Concern
 
-  HOURS_EXPIRES_IN = 24
+  HOURS_EXPIRES_IN = 365
 
   def current_session
     @current_session ||= current_user&.session if current_user&.session&.active?
@@ -60,6 +60,6 @@ module SessionManipulator
   end
 
   def expires
-    HOURS_EXPIRES_IN.hours.from_now
+    HOURS_EXPIRES_IN.days.from_now
   end
 end

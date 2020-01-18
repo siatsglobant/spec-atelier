@@ -2,6 +2,8 @@ describe Api::SessionsController, type: :controller do
   let(:user) { create(:user) }
   let(:session) { create(:session, user: user, token: session_token(user)) }
 
+  USER_EXPECTED_KEYS = %w[id email jwt first_name last_name birthday office profile_image]
+
   describe '#create' do
     describe 'when user exists' do
       before { get :create, params: { user: { email: user.email, password: user.password } }}
@@ -17,7 +19,7 @@ describe Api::SessionsController, type: :controller do
       it 'returns created status' do
         expect(response).to have_http_status(:created)
         expect(json.keys).to match_array(%w[logged_in user])
-        expect(json['user'].keys).to match_array(%w[id email jwt])
+        expect(json['user'].keys).to match_array(USER_EXPECTED_KEYS)
       end
     end
 
@@ -31,13 +33,13 @@ describe Api::SessionsController, type: :controller do
   end
 
   describe '#google_auth' do
-    before { post :google_auth, params: { user: { name: 'name', last_name: 'last_name', google_token: 'token', email: 'not_existing_mail@test.com' } }}
+    before { post :google_auth, params: { user: { first_name: 'name', last_name: 'last_name', google_token: 'token', email: 'not_existing_mail@test.com' } }}
 
     it 'returns created status' do
       expect(response).to have_http_status(:created)
       expect(json.keys).to match_array(%w[logged_in user])
-      expect(json['user'].keys).to match_array(%w[id email jwt])
-      expect(User.last.name).to eq('name')
+      expect(json['user'].keys).to match_array(USER_EXPECTED_KEYS)
+      expect(User.last.first_name).to eq('name')
     end
   end
 
