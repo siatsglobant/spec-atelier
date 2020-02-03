@@ -3,8 +3,8 @@ class CreateProjects < ActiveRecord::Migration[6.0]
     create_table :projects do |t|
       t.string :name, null: false
       t.references :user, null: false, foreign_key: true
-      t.string :project_type, null: false
-      t.string :work_type, null: false
+      t.integer :project_type, null: false
+      t.integer :work_type, null: false
       t.string :country
       t.string :city
       t.date :delivery_date
