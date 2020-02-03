@@ -15,6 +15,7 @@ gem 'haml-rails', '~> 2.0'
 gem 'faker'
 gem 'rolify'
 gem 'cancancan'
+gem 'rubyXL'
 
 group :development, :test do
   gem 'pry'
