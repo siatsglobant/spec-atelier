@@ -34,8 +34,8 @@ user2.add_role :superadmin
 10.times do |index|
   Project.create!(
     name: "Fake Project #{index}",
-    project_type: Project.project_types.values.sample,
-    work_type: Project.work_types.values.sample,
+    project_type: [1,2,3,4,5,6].sample,
+    work_type: [1,2,3].sample,
     country: Faker::Address.country,
     city: Faker::Address.city,
     delivery_date: Time.zone.now + 2.months,
