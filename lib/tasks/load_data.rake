@@ -20,7 +20,7 @@ namespace :db do
     def database_connection
       Section.connection
       Item.connection
-      Spec.connection
+      Subitem.connection
       Brand.connection
     end
 

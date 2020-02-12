@@ -1,6 +1,7 @@
-class CreateSpecs < ActiveRecord::Migration[6.0]
+
+class CreateSubitems < ActiveRecord::Migration[6.0]
   def change
-    create_table :specs do |t|
+    create_table :subitems do |t|
       t.string :name
       t.references :item, null: false, foreign_key: { on_delete: :cascade }
 

@@ -1,15 +1,161 @@
-iX: 'De Arica y Parinacota'
-i: 'De Tarapacá'
-ii: 'De Antofagasta'
-iii: 'De Atacama'
-iv: 'De Coquimbo'
-v: 'De Valparaíso'
-vi: "Del Libertador B. O'Higgins"
-vii: 'Del Maule'
-viii: 'Del Bíobío'
-ix: 'De La Araucanía'
-xiv: 'De Los Ríos'
-x: 'De Los Lagos'
-xi: 'De Aisén del Gral. C. Ibáñez del Campo'
-xii: 'De Magallanes y de La Antártica Chilena'
-xiii: 'Metropolitana de Santiago'
+xv:
+  - Arica
+i:
+  - Iquique - Alto Hospicio
+  - Pozo Almonte
+ii:
+  - Antofagasta
+  - Calama
+  - Tocopilla
+  - Taltal
+  - Mejillones
+  - María Elena
+iii:
+  - Copiapó - Tierra Amarilla
+  - Vallenar
+  - Caldera
+  - Chañaral
+  - El Salvador
+  - Diego de Almagro
+  - Huasco
+iv:
+  - La Serena - Coquimbo
+  - Ovalle
+  - Illapel
+  - Vicuña
+  - Salamanca
+  - Los Vilos
+  - Andacollo
+  - Combarbalá
+  - El Palqui
+  - Monte Patria
+v:
+  - Valparaíso Metropolitano
+  - San Antonio - Cartagena - Santo Domingo - Las Cruces - Las Brisas
+  - Los Andes - San Esteban
+  - San Felipe - Villa Los Almendros
+  - Limache - Olmué
+  - Quintero - Las Ventanas
+  - El Quisco - El Tabo - Algarrobo
+  - La Ligua
+  - Llaillay
+  - Casablanca
+  - Cabildo
+  - El Melón
+  - Nogales
+  - Putaendo
+  - Catemu
+  - Santa Maria
+  - Rinconada
+xiii:
+  - Santiago Metropolitano
+  - Melipilla
+  - Talagante
+  - El Monte
+  - Paine
+  - Curacaví
+  - Isla de Maipo
+  - La Islita
+  - San José de Maipo
+  - Tiltil
+vi:
+  - Rancagua
+  - San Fernando
+  - Rengo
+  - Graneros
+  - Santa Cruz - Palmilla
+  - San Vicente de Tagua Tagua
+  - Chimbarongo
+  - San Francisco de Mostazal
+  - Pichilemu
+  - Requínoa
+  - Lo Miranda
+  - Doñihue
+  - Peumo
+  - Nancagua
+  - Las Cabras - Punta Diamante
+  - Quinta de Tilcoco
+  - Codegua
+vii:
+  - Talca, San Clemente, Maule, Pencahue y Villa Francia
+  - Curicó - Rauco - Sarmiento - Romeral
+  - Linares
+  - Constitución
+  - Cauquenes
+  - Molina
+  - Parral
+  - San Javier
+  - Teno
+  - Longaví
+  - Villa Alegre
+  - Hualañé
+viii:
+  - Concepción Metropolitano
+  - Chillán (incluye Chillán y Chillán Viejo)
+  - Los Angeles - Nacimiento
+  - Curanilahue
+  - San Carlos
+  - Mulchén
+  - Lebu
+  - Cañete
+  - Laja - San Rosendo
+  - Cabrero - Monte Águila
+  - Arauco
+  - Hualqui
+  - Los Alamos
+  - Bulnes
+  - Coelemu
+  - Yungay
+  - Yumbel
+  - Quirihue
+  - Quillón
+  - Coihueco
+  - Santa Bárbara
+  - Huépil
+ix:
+  - Temuco
+  - Angol
+  - Villarrica
+  - Victoria
+  - Pitrufquén - Freire
+  - Lautaro
+  - Nueva Imperial
+  - Collipulli
+  - Loncoche
+  - Traiguén
+  - Pucón
+  - Curacautín
+  - Carahue
+  - Gorbea
+  - Purén
+  - Cunco
+  - Renaico
+xiv:
+  - Valdivia
+  - La Unión - Río Bueno
+  - Panguipulli
+  - Paillaco
+  - Los Lagos
+  - Lanco
+  - San José de la Mariquina
+  - Futrono
+x:
+  - Puerto Montt - Puerto Varas
+  - Osorno
+  - Castro
+  - Ancud
+  - Quellón
+  - Calbuco
+  - Purranque
+  - Llanquihue
+    -Frutillar
+  - Maullín - Carelmapu
+  - Río Negro
+  - Fresia
+  - Los Muermos
+xi:
+  - Coihaique
+  - Puerto Aisén
+xii:
+  - Punta Arenas
+  - Puerto Natales

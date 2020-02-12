@@ -3,9 +3,10 @@ module MetaLookupTable
 
   included do
     searcheable_attributes = new.attribute_names - %w[id created_at updated_at]
-    FIELDS = LOOKUP_TABLE.select {|item| searcheable_attributes.include? item['category'] }
-    FIELDS.map {|a| a['category'] }.uniq.each {|field| new.send(:enum_methods, field) }
-
+    if LookupTable.all.count.positive?
+      FIELDS = JSON.parse(LookupTable.all.to_json).select {|item| searcheable_attributes.include? item['category'] }
+      FIELDS.map {|a| a['category'] }.uniq.each {|field| new.send(:enum_methods, field) }
+    end
     after_find :define_methods
     after_update :define_methods
   end
