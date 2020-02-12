@@ -1,4 +1,9 @@
 describe Api::ProjectsController, type: :controller do
+  before do
+    create(:lookup_table, category: 'project_type', code: 1, value: 'new_building')
+    create(:lookup_table, category: 'project_type', code: 1, value: 'real_state')
+  end
+
   let(:user)           { create(:user) }
   let(:no_logged_user) { create(:user) }
   let(:session)        { create(:session, user: user, token: session_token(user)) }
@@ -95,10 +100,10 @@ describe Api::ProjectsController, type: :controller do
     context 'with valid session' do
       it 'updates a project' do
         request.headers['Authorization'] = "Bearer #{session.token}"
-        patch :update, params: { user_id: user.id, id: project1.id, project: { name: 'new name', project_type: 'residential' } }
+        patch :update, params: { user_id: user.id, id: project1.id, project: { name: 'new name', project_type: "new_building" } }
 
         expect(project1.reload.name).to eq('new name')
-        expect(project1.reload.project_type).to eq('residencial')
+        expect(project1.reload.new_building?).to eq(true)
       end
     end
   end
