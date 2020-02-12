@@ -14,7 +14,11 @@ Rails.application.routes.draw do
       get 'projects/ordered'
       resources :projects
     end
+
+    %w[work_type project_type room_type].each {|category| get "lookup_tables/#{category}s" }
+    get 'general/cities'
   end
+
   post 'auth/google_login_service', to: 'api/sessions#google_auth'
 
   # get 'auth/failure', to: 'api/sessions#google_auth_failure'
