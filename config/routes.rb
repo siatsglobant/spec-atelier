@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
     %w[work_type project_type room_type].each {|category| get "lookup_tables/#{category}s" }
     get 'general/cities'
+    get 'general/sections'
+    get 'general/items_by_section'
   end
 
   post 'auth/google_login_service', to: 'api/sessions#google_auth'
