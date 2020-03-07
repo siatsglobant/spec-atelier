@@ -49,7 +49,7 @@ namespace :db do
     end
 
     def params(row)
-      values = row.cells.map(&:value).map { |item| item.try(:include?, '[') ? array_param(item) : item }
+      values = row.cells.map(&:value).map {|item| item.try(:include?, '[') ? array_param(item) : item }
       @keys.zip(values).to_h.except(:id)
     end
 
