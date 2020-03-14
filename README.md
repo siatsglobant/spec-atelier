@@ -39,6 +39,8 @@ populate your database.
 ```bash
 cd back
 rails db:create db:migrate
+rails db:seed
+bundle exec rake db:load_excel:tables
 ```
 
 ### Start server for back and front
