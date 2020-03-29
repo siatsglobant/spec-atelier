@@ -15,9 +15,14 @@ Rails.application.routes.draw do
       resources :projects
     end
 
+    resources :items, only: %i[] do
+      get 'products'
+    end
+    resources :products, only: %i[show]
+    resources :sections, only: %i[index]
+
     %w[work_type project_type room_type].each {|category| get "lookup_tables/#{category}s" }
     get 'general/cities'
-    get 'general/sections'
     get 'general/items_by_section'
   end
 
