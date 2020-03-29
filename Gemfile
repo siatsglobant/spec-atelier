@@ -16,7 +16,6 @@ gem 'faker'
 gem 'rolify'
 gem 'cancancan'
 gem 'rubyXL'
-gem 'google_drive'
 
 group :development, :test do
   gem 'pry'

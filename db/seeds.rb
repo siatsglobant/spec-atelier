@@ -19,7 +19,7 @@ Role.create([
 
 
 user = User.find_by(email: 'test@specatelier.com')
-user&.delete if user.present?
+user&.delete ? console_message('user deleted', true) : console_message('user not deleted', false)
 
 user = User.new(email: 'test@specatelier.com', first_name: 'Test', last_name: 'User', password: '123456', google_token: 'fake_token')
 user&.save ? console_message('user created', true) : console_message('user not created', false)
