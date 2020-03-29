@@ -62,10 +62,11 @@ describe Api::UsersController, type: :controller do
 
   describe '#show' do
     describe 'when  user logged in' do
+      before { request.headers['Authorization'] = "Bearer #{session.token}" }
+
       describe 'when user exists' do
         it 'shows the resource' do
           current_user.add_role :superadmin
-          request.headers['Authorization'] = "Bearer #{session.token}"
           get :show, params: { id: user2 }
 
           expect(response).to have_http_status(:ok)
@@ -77,7 +78,6 @@ describe Api::UsersController, type: :controller do
 
       describe 'when user does not exists' do
         it 'returns not_found status' do
-          request.headers['Authorization'] = "Bearer #{session.token}"
           get :show, params: { id: '100000' }
           expect(response).to have_http_status(:not_found)
         end
