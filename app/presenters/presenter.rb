@@ -20,7 +20,7 @@ class Presenter
     def pagination_response(list, params)
       page = params[:page].presence&.to_i || 0
       offset = params[:offset].presence&.to_i || 10
-      limit = params[:limit].to_i
+      limit = params[:limit].presence&.to_i || 10
       paginated_list = list.offset(offset * page).limit(limit).map {|resource| decorate(resource) }
       {
         total:     list.count,
