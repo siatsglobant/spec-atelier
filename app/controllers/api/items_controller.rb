@@ -4,8 +4,9 @@ module Api
     before_action :item, only: :products
 
     def products
-      list = ::Products::ProductPresenter.decorate_list(item.products.includes(:subitem))
-      render json: { item: { name: item.name, id: item.id }, products: list }
+      list = item.products.includes(:subitem)
+      decorated_list = ::Products::ProductPresenter.decorate_list(list, params)
+      render json: { products: decorated_list }
     end
 
     private

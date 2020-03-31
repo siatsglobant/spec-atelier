@@ -9,8 +9,24 @@ class Presenter
       define_obj_response
     end
 
-    def decorate_list(list)
-      list.map {|resource| decorate(resource) }
+    def decorate_list(list, params = {})
+      params.present? ? pagination_response(list, params) : list.map {|resource| decorate(resource) }
+    end
+
+    def pagination?
+      params[:limit].present?
+    end
+
+    def pagination_response(list, params)
+      page = params[:page].presence&.to_i || 0
+      offset = params[:offset].presence&.to_i || 10
+      limit = params[:limit].to_i
+      paginated_list = list.offset(offset * page).limit(limit).map {|resource| decorate(resource) }
+      {
+        total:     list.count,
+        list:      paginated_list,
+        next_page: (page + 1) * limit < list.count ? page + 1 : nil
+      }
     end
 
     def presenter_inheritor_method_response(key)
