@@ -24,7 +24,6 @@ module MetaLookupTable
   def enum_methods(field)
     if send(field.to_sym).is_a? Array
       self.class.fields.map {|a| a['category'] }.uniq.each do |field_|
-
         self.class.send :define_method, "#{field_}_values" do
           send(field_.to_sym).map(&:to_i).map do |item|
             self.class.fields.select {|a| a['category'] == field_ && a['code'] == item }.first['value']
