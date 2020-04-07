@@ -18,6 +18,8 @@
 !/storage/.keep
 .byebug_history
 /config/local_env.yml
+/config/google_drive_config.json
+/config/google_storage_config.json.json
 .DS_Store
 lib/.DS_Store
 
