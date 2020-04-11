@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  require 'sidekiq/web'
+  mount Sidekiq::Web => "/sidekiq"
+
   namespace :api do
     resources :sessions, only: %i[create]
     put :logout, to: 'sessions#logout'
@@ -18,7 +21,13 @@ Rails.application.routes.draw do
     resources :items, only: %i[] do
       get 'products'
     end
-    resources :products, only: %i[show]
+    get 'items/:item_id/systems', to: 'items#subitems', as: :systems
+
+    resources :products, only: %i[show create] do
+      post 'associate_images'
+      post 'associate_documents'
+    end
+
     resources :sections, only: %i[index]
 
     %w[work_type project_type room_type].each {|category| get "lookup_tables/#{category}s" }
