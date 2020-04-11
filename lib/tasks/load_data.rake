@@ -28,7 +28,7 @@ namespace :db do
 
     def process_images
       Attached::File.delete_all
-      ActiveRecord::Base.connection.reset_pk_sequence!('images')
+      ActiveRecord::Base.connection.reset_pk_sequence!('files')
       products = @excel.worksheets.select {|a| a if a.sheet_name == 'product' }.first
       products.each_with_index do |row, i|
         @keys = row.cells.map {|c| c&.value&.delete(' ')&.to_sym if c }.compact if i.zero?
@@ -56,7 +56,7 @@ namespace :db do
     end
 
     def attach_image_to_product(file, product, index)
-      image = Image.create!(name: file.name, order: index, owner: product, url: file.public_url )
+      image = Attached::Image.create!(name: file.name, order: index, owner: product, url: file.public_url )
       product.images << image
     end
 
