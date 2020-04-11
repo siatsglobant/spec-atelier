@@ -48,7 +48,13 @@ module MetaLookupTable
   def define_methods
     self.class.fields.map {|a| a['category'] }.uniq.each do |field|
       self.class.send :define_method, "#{field}_spa" do
-        self.class.fields.select {|b| b['value'] == send(field.to_sym) }.first['translation_spa']
+        if send(field.to_sym).is_a? Array
+          send(field.to_sym).map do |value|
+            self.class.fields.select {|b| b['code'] == value.to_i }.first['translation_spa']
+          end
+        else
+          self.class.fields.select {|b| b['value'] == send(field.to_sym) }.first['translation_spa']
+        end
       end
     end
   end
