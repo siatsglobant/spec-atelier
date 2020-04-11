@@ -40,4 +40,9 @@ group :test do
   gem 'database_cleaner'
   gem 'rspec-collection_matchers'
   gem 'factory_bot_rails'
+  gem 'rspec-sidekiq'
+  gem 'sidekiq-status'
 end
+
+gem 'sidekiq'
+gem 'sinatra', github: 'sinatra/sinatra'
