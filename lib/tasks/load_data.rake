@@ -56,7 +56,7 @@ namespace :db do
     end
 
     def attach_image_to_product(file, product, index)
-      image = Attached::Image.create!(name: file.name, order: index, owner: product, url: file.public_url )
+      image = Attached::Image.create!(name: File.basename(file.name), order: index, owner: product, url: file.public_url )
       product.images << image
     end
 
