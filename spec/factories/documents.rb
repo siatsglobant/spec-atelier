@@ -1,7 +1,7 @@
 FactoryBot.define do
-  factory :image, class: 'Attached::Image' do
+  factory :document, class: 'Attached::Document' do
     sequence(:order) {|n| n }
     sequence(:name) {|n| "default_name_#{n}" }
-    sequence(:url) {|n| "https://example_#{n}.jpg" }
+    sequence(:url) {|n| "https://example_#{n}.pdf" }
   end
 end
