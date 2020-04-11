@@ -27,7 +27,7 @@ namespace :db do
     private
 
     def process_images
-      Image.delete_all
+      Attached::File.delete_all
       ActiveRecord::Base.connection.reset_pk_sequence!('images')
       products = @excel.worksheets.select {|a| a if a.sheet_name == 'product' }.first
       products.each_with_index do |row, i|
@@ -49,7 +49,7 @@ namespace :db do
       unless file.nil? || storage_bucket.file(image).present?
         product = Product.find(product_id)
         file.download_to_file("lib/data/temp/#{file.name}")
-        image = storage_bucket.upload_file("lib/data/temp/#{file.name}", "products/#{product.brand.name}-#{file.name.underscore}")
+        image = storage_bucket.upload_file("lib/data/temp/#{file.name}", "products/#{product.brand.name}-#{file.name}")
         sh "rm lib/data/temp/#{file.name}"
         attach_image_to_product(image, product, index)
       end
