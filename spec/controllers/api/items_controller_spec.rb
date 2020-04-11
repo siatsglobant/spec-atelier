@@ -56,4 +56,25 @@ describe Api::ItemsController, type: :controller do
       end
     end
   end
+
+  describe '#subitems' do
+    context 'without session' do
+      before { get :subitems, params: { user_id: no_logged_user.id, item_id: item2} }
+      it_behaves_like 'an unauthorized api request'
+    end
+
+    context 'with valid session' do
+      before do
+        request.headers['Authorization'] = "Bearer #{session.token}"
+      end
+
+      it 'returns list of products that belongs to item' do
+        create_list(:subitem, 2, item: item2)
+        get :subitems, params: { user_id: user.id, item_id: item2.id }
+
+        expect(response).to have_http_status(:ok)
+        expect(json['systems'].count).to eq(2)
+      end
+    end
+  end
 end
