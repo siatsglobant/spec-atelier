@@ -28,11 +28,12 @@ Rails.application.routes.draw do
       post 'associate_documents'
     end
 
-    resources :sections, only: %i[index]
+    resources :sections, only: %i[index] do
+      get 'items'
+    end
 
     %w[work_type project_type room_type].each {|category| get "lookup_tables/#{category}s" }
     get 'general/cities'
-    get 'general/items_by_section'
   end
 
   post 'auth/google_login_service', to: 'api/sessions#google_auth'
