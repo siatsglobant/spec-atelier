@@ -47,13 +47,13 @@ namespace :db do
     def attach_image(image, product_id, index)
       file = @google_drive_session.file_by_title(image)
       puts '*' * 100
-      puts file
+      puts file.name
       unless file.nil? || storage_bucket.file(image).present?
         product = Product.find(product_id)
         puts '*' * 100
         puts product.name
-        file.download_to_file("#{Rails.root}/lib/data/temp/#{file.name}")
-        image = storage_bucket.upload_file("#{Rails.root}/lib/data/temp/#{file.name}", "products/#{product.brand.name}-#{file.name}")
+        file.download_to_file(Rails.root.join("/lib/data/temp/#{file.name}"))
+        image = storage_bucket.upload_file(Rails.root.join("/lib/data/temp/#{file.name}"), "products/#{product.brand.name}-#{file.name}")
         sh "rm lib/data/temp/#{file.name}"
         attach_image_to_product(image, product, index)
       end
