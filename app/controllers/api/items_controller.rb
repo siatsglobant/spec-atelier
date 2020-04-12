@@ -9,6 +9,11 @@ module Api
       render json: { products: decorated_list }
     end
 
+    def subitems # systems on the UI
+      list = item.subitems.map {|subitem| { id: subitem.id, name: subitem.name } }
+      render json: { systems: list }
+    end
+
     private
 
     def item

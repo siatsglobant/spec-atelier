@@ -29,7 +29,7 @@ module Api
 
     def destroy
       project.update(soft_deleted: true)
-      render json: '', status: :deleted
+      render json: '', status: :no_content
     end
 
     def ordered

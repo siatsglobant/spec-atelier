@@ -17,6 +17,7 @@ gem 'rolify'
 gem 'cancancan'
 gem 'rubyXL'
 gem 'google_drive'
+gem 'google-cloud-storage'
 
 group :development, :test do
   gem 'pry'
@@ -30,6 +31,7 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'rubocop'
 end
 
 group :test do
@@ -38,4 +40,9 @@ group :test do
   gem 'database_cleaner'
   gem 'rspec-collection_matchers'
   gem 'factory_bot_rails'
+  gem 'rspec-sidekiq'
+  gem 'sidekiq-status'
 end
+
+gem 'sidekiq'
+gem 'sinatra', github: 'sinatra/sinatra'
