@@ -46,19 +46,17 @@ namespace :db do
       end
     end
 
-    def attach_image(image, product_id, index)
-      file = google_drive_session.file_by_title(image)
-      unless file.nil? || storage_bucket.file(image).present?
+    def attach_image(image_name, product_id, index)
+      file = google_drive_session.file_by_title(image_name)
+      stored_file = storage_bucket.file("products/#{image_name}")
+      unless file.nil? || stored_file.nil?
         product = Product.find(product_id)
-        file.download_to_file("lib/data/temp/#{file.name}")
-        image = storage_bucket.upload_file("lib/data/temp/#{file.name}", "products/#{product.brand.name}-#{file.name}")
-        sh "rm lib/data/temp/#{file.name}"
-        attach_image_to_product(image, product, index)
+        attach_image_to_product(stored_file, product, index)
       end
     end
 
-    def attach_image_to_product(file, product, index)
-      image = Attached::Image.create!(name: File.basename(file.name), order: index, owner: product, url: file.public_url )
+    def attach_image_to_product(stored_file, product, index)
+      image = Attached::Image.create!(name: File.basename(file.name), order: index, owner: product, url: stored_file.public_url )
       product.images << image
     end
 
