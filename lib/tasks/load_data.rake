@@ -52,8 +52,8 @@ namespace :db do
         product = Product.find(product_id)
         puts '*' * 100
         puts product.name
-        file.download_to_file("lib/data/temp/#{file.name}")
-        image = storage_bucket.upload_file("lib/data/temp/#{file.name}", "products/#{product.brand.name}-#{file.name}")
+        file.download_to_file("#{Rails.root}/lib/data/temp/#{file.name}")
+        image = storage_bucket.upload_file("#{Rails.root}/lib/data/temp/#{file.name}", "products/#{product.brand.name}-#{file.name}")
         sh "rm lib/data/temp/#{file.name}"
         attach_image_to_product(image, product, index)
       end
