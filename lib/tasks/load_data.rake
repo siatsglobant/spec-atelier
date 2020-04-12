@@ -19,6 +19,8 @@ namespace :db do
 
     task images: :environment do
       process_images
+      sh 'rm config/google_storage.json'
+      sh 'rm config/google_drive.json'
     end
 
     tasks = Rake.application.tasks.select {|a| a if ['db:load:tables', 'db:load:images'].include?(a.to_s) }
@@ -52,7 +54,7 @@ namespace :db do
         product = Product.find(product_id)
         puts '*' * 100
         puts product.name
-        file.download_to_file(Rails.root.join("/lib/data/temp/#{file.name}"))
+        puts file.download_to_file(Rails.root.join("/lib/data/temp/#{file.name}"))
         image = storage_bucket.upload_file(Rails.root.join("/lib/data/temp/#{file.name}"), "products/#{product.brand.name}-#{file.name}")
         sh "rm lib/data/temp/#{file.name}"
         attach_image_to_product(image, product, index)
@@ -71,7 +73,6 @@ namespace :db do
           project_id:  "spec-atelier",
           credentials: 'config/google_storage.json'
         )
-        sh 'rm config/google_storage.json'
         storage.bucket(ENV['GOOGLE_BUCKET_IMAGES'])
       end
     end
@@ -80,7 +81,6 @@ namespace :db do
       @google_drive_session ||= begin
         File.open('config/google_drive.json', 'w') {|f| f.write(ENV['GOOGLE_DRIVE_CONFIG']) }
         drive_session = GoogleDrive::Session.from_config('config/google_drive.json')
-        sh 'rm config/google_drive.json'
         drive_session
       end
     end
