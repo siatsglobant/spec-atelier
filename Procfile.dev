@@ -1,2 +1,2 @@
 web: cd ../front && lsof -ti :8080 | xargs kill && npm install && npm run start:int
-api: lsof -ti :3000 | xargs kill && bundle exec rake db:migrate &&PORT=3000 bundle exec rails s
+api: lsof -ti :3000 | xargs kill && bundle exec rake db:migrate && PORT=3000 bundle exec rails s
