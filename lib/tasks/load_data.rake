@@ -47,15 +47,11 @@ namespace :db do
     end
 
     def attach_image(image, product_id, index)
-      file = @google_drive_session.file_by_title(image)
-      puts '*' * 100
-      puts file.name
+      file = google_drive_session.file_by_title(image)
       unless file.nil? || storage_bucket.file(image).present?
         product = Product.find(product_id)
-        puts '*' * 100
-        puts product.name
-        puts file.download_to_file(Rails.root.join("/lib/data/temp/#{file.name}"))
-        image = storage_bucket.upload_file(Rails.root.join("/lib/data/temp/#{file.name}"), "products/#{product.brand.name}-#{file.name}")
+        file.download_to_file("lib/data/temp/#{file.name}")
+        image = storage_bucket.upload_file("lib/data/temp/#{file.name}", "products/#{product.brand.name}-#{file.name}")
         sh "rm lib/data/temp/#{file.name}"
         attach_image_to_product(image, product, index)
       end
@@ -80,13 +76,12 @@ namespace :db do
     def google_drive_session
       @google_drive_session ||= begin
         File.open('config/google_drive.json', 'w') {|f| f.write(ENV['GOOGLE_DRIVE_CONFIG']) }
-        drive_session = GoogleDrive::Session.from_config('config/google_drive.json')
-        drive_session
+        GoogleDrive::Session.from_config('config/google_drive.json')
       end
     end
 
     def download_excel_from_google_drive
-      file = @google_drive_session.file_by_title('bd.xlsx')
+      file = google_drive_session.file_by_title('bd.xlsx')
       file.download_to_file("lib/data/bd.xlsx")
       load_excel('bd.xlsx')
     end
