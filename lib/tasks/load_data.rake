@@ -45,6 +45,8 @@ namespace :db do
     end
 
     def attach_image(image, product_id, index)
+      puts '*' * 100
+      puts image
       file = @google_drive_session.file_by_title(image)
       unless file.nil? || storage_bucket.file(image).present?
         product = Product.find(product_id)
