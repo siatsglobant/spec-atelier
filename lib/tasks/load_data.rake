@@ -62,16 +62,23 @@ namespace :db do
 
     def storage_bucket
       @storage_bucket ||= begin
+        File.open('config/google_storage.json', 'w') {|f| f.write(ENV['GOOGLE_APPLICATION_CREDENTIALS']) }
         storage = Google::Cloud::Storage.new(
           project_id:  "spec-atelier",
-          credentials: "config/google_storage_config.json"
+          credentials: 'config/google_storage.json'
         )
+        sh 'rm config/google_storage.json'
         storage.bucket(ENV['GOOGLE_BUCKET_IMAGES'])
       end
     end
 
     def google_drive_session
-      @google_drive_session ||= GoogleDrive::Session.from_config('config/google_drive_config.json')
+      @google_drive_session ||= begin
+        File.open('config/google_drive.json', 'w') {|f| f.write(ENV['GOOGLE_DRIVE_CONFIG']) }
+        drive_session = GoogleDrive::Session.from_config('config/google_drive.json')
+        sh 'rm config/google_drive.json'
+        drive_session
+      end
     end
 
     def download_excel_from_google_drive
